@@ -46,4 +46,9 @@ class EditorM extends CI_Model
         $result = $this->db->query($sql);
         return $result;
     }
+    public function get_tm_sentences(){
+        $sql = "SELECT * FROM sentences, translated WHERE sentences.sId=translated.sId";
+        $result = $this->db->query($sql);
+        return $result;
+    }
 }

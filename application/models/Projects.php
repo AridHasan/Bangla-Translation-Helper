@@ -2,6 +2,24 @@
 
 class Projects extends CI_Model
 {
+    public function update_permission($pId, $uId, $type){
+        $result = $this->db->query("UPDATE projectcollaboration SET permission='$type' WHERE pId='$pId' AND uId='$uId'");
+        return $result;
+    }
+    public function export_sentences($pId){
+        $query = $this->db->query("SELECT * FROM sentences WHERE projectId='$pId'");
+        $result = $this->db->query("SELECT * FROM translated WHERE projectId='$pId' ORDER BY sId ASC");
+        $arr = array(
+            'source' =>$query,
+            'target' => $result
+        );
+        return $arr;
+    }
+    public function get_translators($pId){
+        $query = "SELECT * FROM users,projects, projectcollaboration WHERE users.uId = projectcollaboration.uId AND projects.projectId=projectcollaboration.pId AND projectcollaboration.pId='$pId'";
+        $result = $this->db->query($query);
+        return $result;
+    }
     public function get_data($u_id){
         $query = $this->db->query("SELECT * FROM users WHERE uId='$u_id'");
         $link = $this->get_connection();
@@ -67,8 +85,10 @@ class Projects extends CI_Model
                 if($q->num_rows() < 1) {
                     $query2 = $this->db->query("INSERT INTO projectcollaboration VALUES ('','$pId','$row->uId')");
                     //Sending Email
-                    $subject = 'Translation Contribution Invitation';
-                    $message = 'Existing User';
+                    $subject = 'Invitation for Contributing in Translation';
+                    $message = "Dear $row->fname $row->lame, \r\n";
+                    $message .= "You're warmly invited to collaborate into a translation project. You will see your new project in dashboard.";
+                    $message .="\r\n\r\n Best \r\n AmaderInfo";
                     $this->send_email($email,$subject,$message);
                     return 'suc';
                 }else{
@@ -80,8 +100,11 @@ class Projects extends CI_Model
             $res = $this->db->query("SELECT * FROM inviteduser WHERE email='$email'");
             if($res->num_rows() <= 0) {
                 $query = $this->db->query("INSERT INTO `inviteduser`(`iuId`, `pId`, `email`) VALUES ('','$pId','$email')");
-                $subject = 'Translation Contribution Invitation';
-                $message = 'New User';
+                $subject = 'Invitation for Contributing in Translation';
+                $message = "Dear New User, \r\n";
+                $message .= "You're warmly invited to collaborate into a translation project. Please click the link to translate project to help your friend.";
+                $message .= "\r\n\r\n".base_url()."registration?email=".$email;
+                $message .="\r\n\r\n Best \r\n AmaderInfo";
                 $this->send_email($email,$subject,$message);
                 return 'suc';
             }else{

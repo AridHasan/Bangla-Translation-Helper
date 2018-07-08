@@ -6,7 +6,7 @@ class ProjectSettings extends CI_Controller {
     public function index(){
         $this->load->model('Auth');
         if($this->Auth->islogged() == true){
-            if($_SESSION['userType'] != 'user' and array_key_exists('project', $_GET)) {
+            if($_SESSION['userType'] == 'admin' and array_key_exists('project', $_GET)) {
                 $this->userId = $_SESSION['uId'];
                 $this->projectId = $_GET['project'];
                 $this->load->model('Projects');
@@ -57,6 +57,71 @@ class ProjectSettings extends CI_Controller {
             $this->session->set_flashdata('file_succ','Error in file uploading');
             redirect(base_url().'ProjectSettings?project='.$pId);
         }
+    }
+    public function export_files(){
+        $pId= $this->input->post('pId');
+        $format = $this->input->post('format');
+        //$config['upload_path'] = './resources/files/downloads/';
+        //$config['allowed_types'] = $format;
+        //$config['max_size'] = '200';
+        $this->load->helper('file');
+        $this->load->model('Projects');
+        $sentences = $this->Projects->export_sentences($pId);
+        $source = $sentences['source'];
+        $target = $sentences['target'];
+        $url='';
+        if($format=='csv'){
+            $url='./resources/files/downloads/'.$pId.'.'.$format;
+            $fh = fopen("$url","w");
+            fprintf($fh, chr(0xEF).chr(0xBB).chr(0xBF));
+            fputcsv($fh,array('Source Text', 'Translated Text'));
+            foreach ($source->result() as $sentence){
+                $flag=0;
+                foreach ($target->result() as $trans){
+                    if($sentence->sId == $trans->sId){
+                        $flag=1;
+                        fputcsv($fh,array($sentence->sourceSentence, $trans->targetText));
+                    }
+                }
+                if($flag==0){
+                    fputcsv($fh,array($sentence->sourceSentence, ''));
+                }
+            }
+            fclose($fh);
+        }elseif ($format=='tsv'){
+            $url=$url='./resources/files/downloads/'.$pId.'.'.$format;
+            $fh = fopen($url,"w");
+            fprintf($fh, chr(0xEF).chr(0xBB).chr(0xBF));
+            fputcsv($fh,array("Source Text \t Translated Text"));
+            foreach ($source->result() as $sentence){
+                $flag=0;
+                foreach ($target->result() as $trans){
+                    if($sentence->sId == $trans->sId){
+                        $flag=1;
+                        fputcsv($fh,array($sentence->sourceSentence."\t". $trans->targetText));
+                    }
+                }
+                if($flag==0){
+                    fputcsv($fh,array($sentence->sourceSentence."\t". ''));
+                }
+            }
+            fclose($fh);
+        }
+        // Build the headers to push out the file properly.
+        header('Set-Cookie: fileDownload=true; path=/');
+        header('Pragma: public');     // required
+        header('Expires: 0');         // no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($url)).' GMT');
+        header('Cache-Control: must-revalidate');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename("$pId.$format").'"');  // Add the file name
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: '.filesize($url)); // provide file size
+        header('Connection: close');
+        readfile($url); // push it out
+        unlink($url);
+        exit();
     }
     public function upload_glossary(){
         $config['upload_path'] = './resources/files/';

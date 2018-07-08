@@ -6,10 +6,12 @@ class Auth extends CI_Model
     public function send_code($user){
         $utilities = new Utilities();
         $response = $utilities->filter($user);
-        $message = '';
+        $message = "Please follow the link below to reset the password for your account.\r\n\r\n
+        If you haven't explicitly requested a password reset, you can ignore this request.";
         if($response == 'email'){
             $result = $this->get_userId($user);
             $code = $this->generate_activation_code($result);
+            $message .= base_url().'ChangePassword?changeKey?'.$code;
             if($result != ''){
                 $this->send_email($user,'AmaderInfo Change Password', $message);
                 return true;
@@ -20,6 +22,7 @@ class Auth extends CI_Model
             $result = $this->get_email_by_username($user);
             if($result != ''){
                 $code = $this->generate_activation_code($result['uId']);
+                $message .= base_url().'ChangePassword?changeKey?'.$code;
                 $this->send_email($result['email'],'AmaderInfo Change Password', $message);
                 return true;
             }else{
@@ -142,7 +145,6 @@ class Auth extends CI_Model
         $this->email->to($to);
         $this->email->subject($subject);
         $this->email->message($message);
-        // Set to, from, message, etc.
         $this->email->send();
     }
     public function set_cookies($data){
@@ -171,7 +173,7 @@ class Auth extends CI_Model
         $res = $this->db->query("SELECT * FROM inviteduser WHERE email='$email'");
         if($res->num_rows() > 0){
             foreach ($res->result() as $row){
-                $this->db->query("INSERT INTO projectcollaboration VALUES ('','$row->pId','$uId')");
+                $this->db->query("INSERT INTO projectcollaboration VALUES ('','$row->pId','$uId','translator')");
                 $this->db->query("DELETE FROM inviteduser WHERE email='$email'");
             }
         }
@@ -193,7 +195,8 @@ class Auth extends CI_Model
             return false;
         } else{
             $subject = 'AmaderInfo Account Confirmation';
-            $message = '';
+            $message = "Dear Arid Hasan,\r\n\r\nPlease click on the following link to activate your account:\r\n";
+            $message .= base_url().'AccountActivation?activationKey?'.$response."\r\n";
             $this->send_email($data['email'], $subject, $message);
             return true;
         }
@@ -336,7 +339,6 @@ class Users
             $this->userType = 'user';
         }
     }
-
     function save_user(){
         $sql = "INSERT INTO users VALUES ('','$this->fname','$this->lname','$this->email','$this->gender','$this->username','$this->birthdate','".
             "$this->phone','$this->bio','$this->password','$this->address','$this->lastLogin','$this->acCreation','$this->status','$this->userType')";

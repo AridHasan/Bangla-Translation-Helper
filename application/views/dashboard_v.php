@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 text-center" style="height: 80%;">
-                    <?php if($_SESSION['userType'] != 'user'){ ?>
+                    <?php if($_SESSION['userType'] == 'admin'){ ?>
                     <div class="col-sm-4">
                         <div class="text-center" style="border: 1px solid lightgray; height: auto;">
                             <h5 class="card-title text-center">Create Project</h5>
@@ -192,16 +192,18 @@
                                             if($_SESSION['userType'] != 'user'){
                                     ?>
                                     <tr>
-                                        <td style="width: 70%;"><?php echo $my_data[$i]['pName']; ?></td>
-                                        <td><a href="<?php echo base_url()."ProjectSettings?project=".$my_data[$i]['projectId']; ?>" class="btn btn-primary">Translate</a></td>
+                                        <td style="width: 63%;"><?php echo $my_data[$i]['pName']; ?></td>
+                                        <td><a href="<?php echo base_url()."ProjectSettings?project=".$my_data[$i]['projectId']; ?>" class="btn btn-primary">Translate</a>
+                                            <a href="<?php echo base_url()."verify?project=".$my_data[$i]['projectId']; ?>" class="btn btn-secondary">Verify Translations</a>
+                                        </td>
                                     </tr>
                                             <?php }else if($_SESSION['userType'] == 'user'){ ?>
                                             <tr>
                                                 <td style="width: 70%;"><?php echo $my_data[$i]['pName']; ?></td>
-                                                <td><a href="<?php echo base_url()."Editor?project=".$my_data[$i]['projectId']; ?>" class="btn btn-primary">Translate</a> </td>
+                                                <td><a href="<?php echo base_url()."Editor?project=".$my_data[$i]['projectId']; ?>" class="btn btn-primary">Translate</a>
+                                                <?php if($my_data[$i]['permission'] =='expert'){ ?><a href="<?php echo base_url()."verify?project=".$my_data[$i]['projectId']; ?>" class="btn btn-secondary">Verify Translations</a> <?php } ?></td>
                                             </tr>
-                                    <?php }
-                                    } ?>
+                                    <?php } }?>
                                 </table>
                             </div>
                         </div>

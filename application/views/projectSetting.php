@@ -55,6 +55,18 @@
                         }
                     }
                 });
+                /*$('#export').click(function () {
+                    var format = document.getElementById("format").value;
+                    var pId = document.getElementById("pId").value;
+                    $.ajax({
+                        type: "post",
+                        url: "ProjectSettings/export_files",
+                        data: {pId:pId, format:format},
+                        success: function (data) {
+                            alert('Success'+data);
+                        }
+                    });
+                });*/
             });
         </script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -149,21 +161,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-8 offset-sm-2">
-                        <div style="margin-top: 70px;">
-                            <h5>Invite people to contribute</h5>
-                            <hr/>
-                            <div style="margin-left: 5px; margin-right: 5px;">
-                                <form action="<?php echo base_url();?>ProjectSettings/invite_user" method="post">
-                                    <div class="form-group">
-                                        <p id="user_err" style="color: green;"><?php echo $this->session->flashdata('mes')?></p>
-                                        <input type="email" class="form-control" name="email" id="new_email" placeholder="Email Address" required>
-                                        <input type="hidden" id="pId" name="pId" value="<?php echo $pId; ?>">
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary" name="addPeople">ADD User</button>
-                                    </div>
+                    <div class="col-sm-12 text-center" style="margin-top: 70px;">
+                        <div class="card-group">
+                            <div class="card col-sm-4" style="float: left; border: 1px solid lightgray; margin-left: 10px;">
+                                <h5>Export Translated Sentences</h5><hr/>
+                                <form class="form-group" action="<?php echo base_url();?>ProjectSettings/export_files" method="post">
+                                    <select class="form-control" name="format">
+                                        <option value="">Select File Format</option>
+                                        <option value="csv">CSV File</option>
+                                        <!--<option value="tsv">TSV File</option>
+                                        <option value="pdf">PDF File</option>-->
+                                    </select>
+                                    <input type="hidden" name="pId" value="<?php echo $pId; ?>">
+                                    <input type="submit" class="btn btn-primary text-center" style="margin-top: 5px;" id="export" value="Download">
                                 </form>
+                            </div>
+                            <div class=" card col-sm-4" style="float: left;border: 1px solid lightgray; margin-left: 10px;">
+                                <h5>Invite people to contribute</h5>
+                                <hr/>
+                                <div style="margin-left: 5px; margin-right: 5px;">
+                                    <form action="<?php echo base_url();?>ProjectSettings/invite_user" method="post">
+                                        <div class="form-group">
+                                            <p id="user_err" style="color: green;"><?php echo $this->session->flashdata('mes')?></p>
+                                            <input type="email" class="form-control" name="email" id="new_email" placeholder="Email Address" required>
+                                            <input type="hidden" id="pId" name="pId" value="<?php echo $pId; ?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" name="addPeople">ADD User</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card col-sm-4" style="float: left; border: 1px solid lightgray; margin-left: 10px;">
+                                <h5 style="margin-top: 25%;"><a href="<?php echo base_url().'ManageTranslator?project='.$pId; ?>">Manage Translator</a></h5>
                             </div>
                         </div>
                     </div>

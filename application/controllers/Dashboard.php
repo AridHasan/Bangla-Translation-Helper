@@ -20,8 +20,13 @@ class Dashboard extends CI_Controller
             while ($row = mysqli_fetch_assoc($my_project)){
                 $arr = array(
                     'pName' => $row['pName'],
-                    'projectId' => $row['projectId']
+                    'projectId' => $row['projectId'],
                 );
+                if(array_key_exists('permission', $row)){
+                    $arr['permission'] = $row['permission'];
+                }else{
+                    $arr['permission'] = '';
+                }
                 array_push($my_data, $arr);
             }
             $all_projects = $response['all_projects'];
