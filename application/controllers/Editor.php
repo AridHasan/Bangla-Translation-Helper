@@ -31,8 +31,8 @@ class Editor extends CI_Controller
                         $data['sId'] = $row->sId;
                         $data['pId'] = $row->projectId;
                         $data['uId'] = $uId;
-                        $data['source'] = $row->sourceSentence;//'মেসির সঙ্গে আমি খেলতে পেরেছি সেটা আমার জন্য বিশাল একটি সম্মান';//
-                        //$data['source'] = 'পাঁচ দিন চলেছে অনুষ্ঠান';
+                        //$data['source'] = $row->sourceSentence;//'মেসির সঙ্গে আমি খেলতে পেরেছি সেটা আমার জন্য বিশাল একটি সম্মান';//
+                        $data['source'] = 'পাঁচ দিন চলেছে অনুষ্ঠান';
                         break;
                     }
                 }
@@ -146,21 +146,25 @@ class Editor extends CI_Controller
             $count = 0;
             $bn_sentence = $row->sourceSentence;
             $en_sentence = $row->targetText;
+            $match_word_bn = [];
+            $match_word_en = [];
             $trans_words = explode(' ', trim($bn_sentence));
             $en_words = explode(' ', str_replace('.','',trim($en_sentence)));
             for($i=0; $i<count($words); $i++){
                 foreach ($trans_words as $word){
                     $distance = $this->edit_distance(trim($word), trim($words[$i]));
-                    if($distance <= 3){
+                    if($distance <= 0){
                         $meaning = $this->EditorM->get_raw_meaning($words[$i]);
                         if($meaning->num_rows > 0) {
                             while ($row = mysqli_fetch_assoc($meaning)) {
                                 $en_meaning = $this->en_stemmer($row['enUS']);
                                 for($j=0; $j<count($en_words); $j++){
                                     $tEn_word = $this->en_stemmer(trim($en_words[$j]));
-                                    if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) <= 0) {
-                                        $bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $words[$i]);
-                                        $en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
+                                    if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) == 0) {
+                                        array_push($match_word_bn, $words[$i]);
+                                        array_push($match_word_en, $en_meaning);
+                                        //$bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $words[$i]);
+                                        //$en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
                                         $count++;
                                     }
                                 }
@@ -173,9 +177,11 @@ class Editor extends CI_Controller
                                 //echo $words[$i].'->'.$row['enUS'].'<br>';
                                 for($j=0; $j<count($en_words); $j++){
                                     $tEn_word = $this->en_stemmer(trim($en_words[$j]));
-                                    if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) <= 0) {
-                                        $bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $root);
-                                        $en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
+                                    if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) == 0) {
+                                        array_push($match_word_bn, $root);
+                                        array_push($match_word_en, $en_meaning);
+                                        //$bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $root);
+                                        //$en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
                                         $count++;
                                     }
                                 }
@@ -184,7 +190,7 @@ class Editor extends CI_Controller
                     }else{
                         $root2 = $this->get_root($word);
                         $distance = $this->edit_distance(trim($root2), trim($words[$i]));
-                        if($distance <=3){
+                        if($distance <=0){
                             $meaning = $this->EditorM->get_raw_meaning($words[$i]);
                             while ($row = mysqli_fetch_assoc($meaning)) {
                                 $en_meaning = $this->en_stemmer($row['enUS']);
@@ -193,8 +199,10 @@ class Editor extends CI_Controller
                                     $tEn_word = $this->en_stemmer(trim($en_words[$j]));
                                     //echo $tEn_word.'<br>';
                                     if ($this->edit_distance( strtolower($tEn_word), strtolower(trim($en_meaning))) == 0) {
-                                        $bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $words[$i]);
-                                        $en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
+                                        array_push($match_word_bn, $words[$i]);
+                                        array_push($match_word_en, $en_meaning);
+                                        //$bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $words[$i]);
+                                        //$en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
                                         $count++;
                                     }
                                 }
@@ -204,16 +212,18 @@ class Editor extends CI_Controller
                             if (strlen($root) >= 6) {
                                 $distance = $this->edit_distance(trim($root2), trim($root));
                                 //echo $root . '<br>';
-                                if ($distance <= 6) {
+                                if ($distance <= 0) {
                                     $meaning = $this->EditorM->get_raw_meaning($root);
                                     while ($row = mysqli_fetch_assoc($meaning)) {
                                         $en_meaning = $this->en_stemmer($row['enUS']);
                                         //echo $words[$i].'->'.$row['enUS'].'<br>';
                                         for ($j = 0; $j < count($en_words); $j++) {
                                             $tEn_word = $this->en_stemmer(trim($en_words[$j]));
-                                            if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) <= 0) {
-                                                $bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $root);
-                                                $en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
+                                            if ($this->edit_distance(strtolower($tEn_word), strtolower(trim($en_meaning))) == 0) {
+                                                array_push($match_word_bn, $words[$i]);
+                                                array_push($match_word_en, $en_meaning);
+                                                //$bn_sentence = $this->highlights_fuzzy_text($bn_sentence, $root);
+                                                //$en_sentence = $this->highlights_fuzzy_text($en_sentence, $en_meaning);
                                                 $count++;
                                             }
                                         }
@@ -224,10 +234,14 @@ class Editor extends CI_Controller
                     }
                 }
             }
-            if($count > 0){
+            if($count > 0 and count($match_word_bn) > 0 and count($match_word_en) >0){
+                $bn_sentence = $this->highlights_text($bn_sentence, $match_word_bn);
+                $en_sentence = $this->highlights_text($en_sentence, $match_word_en);
                 array_push($output_sentence_listBN, $bn_sentence);
                 array_push($output_sentence_listEN, $en_sentence);
+                $count = 0;
             }
+            unset($match_word_en);unset($match_word_bn);
         }
         //return array
         $arr = array(
@@ -235,6 +249,18 @@ class Editor extends CI_Controller
             "bn" => $output_sentence_listBN
         );
         return $arr;
+    }
+    function highlights_text($sentence, $words){
+        foreach($words as $word){
+            if(stripos($sentence, $word) !== false){
+                $pos = stripos($sentence,$word);
+                $str1 = substr($sentence,0,$pos);
+                $str2 = substr($sentence,$pos, strlen($word));
+                $str3 = substr($sentence,$pos+strlen($word));
+                $sentence = $str1."<span style='color: red;'>".$str2."</span>".$str3;
+            }
+        }
+        return $sentence;
     }
     function edit_distance($source, $target){
         $source_len = strlen($source);
