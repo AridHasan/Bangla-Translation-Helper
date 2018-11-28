@@ -17,7 +17,7 @@ class Auth extends CI_Model
         if($response == 'email'){
             $result = $this->get_userId($user);// getting user id by email
             $code = $this->generate_activation_code($result); //calling the 6 digit code generation method
-            $message .= base_url().'ChangePassword?changeKey?'.$code; // add url to the message body
+            $message .= base_url().'ChangePassword?changeKey='.$code; // add url to the message body
             if($result != ''){
                 $this->send_email($user,'AmaderInfo Change Password', $message); // send email to the requested user
                 return true;
@@ -28,7 +28,7 @@ class Auth extends CI_Model
             $result = $this->get_email_by_username($user); //getting email by username
             if($result != ''){
                 $code = $this->generate_activation_code($result['uId']);//calling the 6 digit code generation method
-                $message .= base_url().'ChangePassword?changeKey?'.$code; // add url to the message body
+                $message .= base_url().'ChangePassword?changeKey='.$code; // add url to the message body
                 $this->send_email($result['email'],'AmaderInfo Change Password', $message);// send email to the requested user
                 return true;
             }else{
@@ -165,8 +165,8 @@ class Auth extends CI_Model
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'amaderinfo7@gmail.com',
-            'smtp_pass' => 'amaderinfo123',
+            'smtp_user' => '',
+            'smtp_pass' => '',
             'mailtype'  => 'html',
             'charset'   => 'iso-8859-1'
         );
@@ -248,8 +248,8 @@ class Auth extends CI_Model
              * sending mail to newly registered user for his/her email verification
              */
             $subject = 'AmaderInfo Account Confirmation';
-            $message = "Dear Arid Hasan,\r\n\r\nPlease click on the following link to activate your account:\r\n";
-            $message .= base_url().'AccountActivation?activationKey?'.$response."\r\n";
+            $message = "Dear ".$data['fname']." ".$data['lname'].",\r\n\r\nPlease click on the following link to activate your account:\r\n";
+            $message .= base_url().'AccountActivation?activationKey='.$response."\r\n";
             $this->send_email($data['email'], $subject, $message);
             return true;
         }
@@ -389,7 +389,7 @@ class Users
         if(array_key_exists('userType', $data)) {
             $this->userType = $data['userType'];
         }else{
-            $this->userType = 'user';
+            $this->userType = 'admin';
         }
     }
     function save_user(){
