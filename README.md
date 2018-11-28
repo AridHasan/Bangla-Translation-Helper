@@ -5,7 +5,7 @@ The application *AmaderCAT* is the abbreviation of **Amader Computer Assisted Tr
 **The system is developed for supporting any language, however, we only evaluated for developing Bangla-English parallel corpus.**
 
 The architecture and the user guidelines information is described in our papers:
- - [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*link will updated soon*)
+ - [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*paper link will updated soon*)
 
 ## Setup
 
@@ -51,7 +51,7 @@ User guidelines are already provided in our [paper]() or you can see the [video 
 You will find the parallel corpus that we build using our developed application *AmaderCAT* in the *data* folder of root directory. For Bengali and English parallel corpus the files name are *bengali.txt* and *english.txt*, respectively.
 
 ## Citation
-If you find the application useful for developing parallel corpus, please cite the our paper [A Collaborative Platform to Collect Data for Developing Machine Translation System]() *link will updated soon*
+If you find the application useful for developing parallel corpus, please cite the our paper [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*paper link will updated soon*)
 ```
 BibTex will be updated soon. 
 ```
