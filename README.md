@@ -18,12 +18,12 @@ To configure this application, following necessary steps must need to be perform
 We used [CodeIgniter (v3.1.7)](https://www.codeigniter.com/) framework to develop this application.
 To extends this corpus building application, please also see the [CodeIgniter Documentation](https://codeigniter.com/docs).
 
-####  Download
+###  Download
 *Please download or run the following command to clone this repository:*
 ```repo link
 https://github.com/AridHasan/Data-Collection-System-for-Machine-Translation.git
 ```
-#### Database Configuration
+### Database Configuration
 Create a database with the name of *amader* or change the database configuration in *application/config/database.php* and *application/models/Auth.php* in *User* class. The table structures are in *database.sql* file in the root directory. Run every table structure on your *MySQL* command prompt.
 
 *Please run this following command to create database:*
@@ -31,7 +31,7 @@ Create a database with the name of *amader* or change the database configuration
 CREATE DATABASE IF NOT EXISTS `amader`
 ```
 
-#### Configuring E-mail sending option
+### Configuring E-mail sending option
 Before registration, e-mail configuration is mandatory. Please modify the *send_mail* function in the *application/models/Auth.php* file to configure the e-mail option.
 The configuration should be like:
 ```email configure
