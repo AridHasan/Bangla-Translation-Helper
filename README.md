@@ -1,5 +1,6 @@
 # *AmaderCAT:* A Data Collection System for Machine Translation System
 
+## Objective & Description
 The application *AmaderCAT* is the abbreviation of **Amader Computer Assisted Translation**. This application is developed for the purpose of building parallel corpus for **Machine Translation** system. The application contains a Translation Memory and a Glossary suggestions implementation which helps translators by providing [TM](https://en.wikipedia.org/wiki/Translation_memory) and [glossary](https://en.wikipedia.org/wiki/Glossary) suggestions. The application is collaborative and highly configurable for the translation task. It has the mechanism for crowd translation. You can use it as a single user or a group/team. In future, we will add **Machine Translation System** in our application using Neural Network technologies.
 
 **This developed system supports any language, however, we only evaluated for developing Bangla-English parallel corpus.**
@@ -7,10 +8,12 @@ The application *AmaderCAT* is the abbreviation of **Amader Computer Assisted Tr
 The information about architecture and user guidelines is described in our paper and thesis site:
  - [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*paper link will updated soon*)
  - Please visit my thesis site to know more, [Machine Translation System](https://sites.google.com/diu.edu.bd/mtbn2en)
+ 
+**<p align="center">For better experiences, please visit the demo site:- <a href="https://translate.ejeex.com" title="AmaderCAT: A Machine Translation Tool for Bangla">AmaderCAT: A Machine Translation Tool for Bangla</a></p>**
 
 ## Setup
 To configure this application, following necessary steps must need to be performed:
-#### Prerequisites
+### Prerequisites
  - [PHP 5.5 or higher (*PHP 7.1 recommended*)](http://php.net/downloads.php).
  - [MySQL 5.7 or higher](https://dev.mysql.com/downloads/installer/)
  - Server: [Apache (version 2.2 or higher)](http://httpd.apache.org/download.cgi) or [NGINX (version 1.1 or higher)](https://nginx.org/en/download.html)
@@ -18,7 +21,7 @@ To configure this application, following necessary steps must need to be perform
 We used [CodeIgniter (v3.1.7)](https://www.codeigniter.com/) framework to develop this application.
 To extends this corpus building application, please also see the [CodeIgniter Documentation](https://codeigniter.com/docs).
 
-###  Download
+### Download
 *Please download or run the following command to clone this repository:*
 ```repo link
 https://github.com/AridHasan/Data-Collection-System-for-Machine-Translation.git
