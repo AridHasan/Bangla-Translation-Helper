@@ -6,7 +6,7 @@ The application *AmaderCAT* is the abbreviation of **Amader Computer Assisted Tr
 **This developed system supports any language, however, we only evaluated for developing Bangla-English parallel corpus.**
 
 The information about architecture and user guidelines is described in our paper and thesis site:
- - [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*paper link will updated soon*)
+ - [A Collaborative Platform to Collect Data for Developing Machine Translation System](https://link.springer.com/chapter/10.1007/978-981-13-7564-4_35)
  - Please visit my thesis site to know more, [Machine Translation System](https://sites.google.com/diu.edu.bd/mtbn2en)
  
 **<p align="center">For better experiences, please visit the demo site:- <a href="https://translate.ejeex.com" title="AmaderCAT: A Machine Translation Tool for Bangla">AmaderCAT: A Machine Translation Tool for Bangla</a></p>**
@@ -65,17 +65,17 @@ Administration and user guidelines already provided in our [paper]() or you can 
 ## Our Developed Corpus
 You will find our parallel **Bangla to English** corpus which developed by using this *AmaderCAT* application in the [data](https://github.com/AridHasan/Data-Collection-System-for-Machine-Translation/tree/master/data) folder of root directory. For Bengali and English parallel corpus the files name are *bengali.txt* and *english.txt*, respectively.
 ## Citation
-If you find this application useful and use this system for developing your parallel corpus, please cite this paper, please cite this paper [A Collaborative Platform to Collect Data for Developing Machine Translation System]() (*paper link will be updated soon*)
+If you find this application useful and use this system for developing your parallel corpus, please cite this paper, please cite this paper [A Collaborative Platform to Collect Data for Developing Machine Translation System](https://link.springer.com/chapter/10.1007/978-981-13-7564-4_35).
 
-*Md. Arid Hasan, Firoj Alam & Sheak Rashed Haider Noori, A Collaborative Platform to Collect Data for Machine Translation System, International Joint Conference on Computational Intelligence - IJCCI 2018.*
+*Hasan M.A., Alam F., Noori S.R.H. (2020) A Collaborative Platform to Collect Data for Developing Machine Translation Systems. In: Uddin M., Bansal J. (eds) Proceedings of International Joint Conference on Computational Intelligence. Algorithms for Intelligent Systems. Springer*
 
 ```bib
-@inproceedings{hasan2018collaborative,
-	title={A Collaborative Platform to Collect Data for Machine Translation System},
-	author={Hasan, Md. Arid and Alam, Firoj and Noori, Sheak Rashed Haider},
-	booktitle={Proceedings of International Joint Conference on Computational Intelligence - IJCCI 2018},
-	pages={XX--XXX},
-	year={2018},
-	publisher={Springer}
+@inproceedings{hasan2020collaborative,
+  title={A Collaborative Platform to Collect Data for Developing Machine Translation Systems},
+  author={Hasan, Md Arid and Alam, Firoj and Noori, Sheak Rashed Haider},
+  booktitle={Proceedings of International Joint Conference on Computational Intelligence},
+  pages={407--416},
+  year={2020},
+  organization={Springer}
 }
 ```
